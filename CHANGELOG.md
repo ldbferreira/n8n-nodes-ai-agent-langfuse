@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.28] - 2026-08-05
+
+### Added
+- **V3 Agent Execution Engine**: Synced with n8n's official V3 agent architecture, enabling native engine request/response cycle and proper sub-agent support
+- **HITL (Human-in-the-Loop)**: Full support for `Send and Wait` tool — agent can pause execution and request human confirmation before proceeding
+- **Multi-item batch execution**: V3 engine processes items in configurable batches with optional delay between batches
+- **Fallback model support**: Configure a secondary LLM that activates when the primary model fails
+
+### Fixed
+- **Tool schema cross-module instanceof fix**: Replaced `instanceof ZodType` check with duck-typing (`_def` property detection) to prevent tool schema corruption when multiple Zod instances are loaded (e.g. `send_and_wait` schema becoming `type: null`)
+- **MCP toolkit cross-module instanceof fix**: Replaced `instanceof StructuredToolkit` check with duck-typing (`tools` array property detection) to fix `"multiple tools with the same name: 'undefined'"` error when connecting multiple MCP Client Tool nodes
+- **ESLint config**: Test files (`*.test.ts`) excluded from typed linting to match tsconfig exclusions
+
+---
+
 ## [0.1.27] - 2025-12-30
 
 ### Fixed

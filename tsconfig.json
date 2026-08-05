@@ -27,11 +27,23 @@
         "outDir": "./dist/",
         "baseUrl": ".",
         "paths": {
+            "@utils/*": [
+                "nodes/AgentWithLangfuse/src/utils/*"
+            ],
+            "@n8n/config": [
+                "nodes/AgentWithLangfuse/src/shims/n8n-config"
+            ],
+            "@n8n/di": [
+                "nodes/AgentWithLangfuse/src/shims/n8n-di"
+            ],
+            "n8n-nodes-base/dist/utils/highlightedData": [
+                "nodes/AgentWithLangfuse/src/shims/highlightedData"
+            ],
             "utils/*": [
-                "src/utils/*"
+                "nodes/AgentWithLangfuse/src/utils/*"
             ],
             "types/*": [
-                "src/types/*"
+                "nodes/AgentWithLangfuse/src/types/*"
             ]
         }
     },
@@ -43,4 +55,8 @@
         "src",
         "src/V2",
     ],
+    "exclude": [
+        "**/*.test.ts",
+        "**/tests/**"
+    ]
 }
