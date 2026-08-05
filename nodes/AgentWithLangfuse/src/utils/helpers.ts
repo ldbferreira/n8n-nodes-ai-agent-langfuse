@@ -1,7 +1,7 @@
 import type { BaseMessage } from '@langchain/core/messages';
 import { type DynamicStructuredTool, type StructuredTool, Tool } from '@langchain/core/tools';
 import type { JSONSchema7 } from 'json-schema';
-import { StructuredToolkit, type SupplyDataToolResponse } from 'n8n-core';
+import { type StructuredToolkit, type SupplyDataToolResponse } from 'n8n-core';
 import type {
 	ICredentialDataDecryptedObject,
 	IExecuteFunctions,
@@ -9,7 +9,6 @@ import type {
 	IWebhookFunctions,
 } from 'n8n-workflow';
 import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
-import { ZodType } from 'zod';
 
 import { N8nTool } from './N8nTool';
 import { convertJsonSchemaToZod } from './schemaParsing';
@@ -108,7 +107,7 @@ export function getSessionId(
 							itemIndex,
 						) as string;
 					}
-				} catch (error) {}
+				} catch (error) { }
 			}
 		}
 
@@ -177,13 +176,15 @@ export function escapeSingleCurlyBrackets(text?: string): string | undefined {
 /* Convert tools with json schema to tools with zod schema and type Tool
  * Most nodes expect tools to have a Zod schema and have Tool type, do this conversion to make sure all tools are compatible
  */
-const normalizeToolSchema = (tool: Tool | DynamicStructuredTool | StructuredTool) => {
+const normalizeToolSchema = (tool: Tool | DynamicStructuredTool | StructuredTool): Tool => {
 	if (tool instanceof Tool) {
 		return tool;
 	}
-	const isZodObject = tool.schema instanceof ZodType;
+	// instanceof fails across module boundaries when multiple Zod copies are loaded
+	const isZodObject = !!(tool.schema && typeof tool.schema === 'object' && '_def' in tool.schema);
 	if (tool.schema && !isZodObject) {
-		tool.schema = convertJsonSchemaToZod(tool.schema as JSONSchema7);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(tool as any).schema = convertJsonSchemaToZod(tool.schema as JSONSchema7);
 	}
 
 	return tool as Tool;
@@ -206,17 +207,18 @@ export const getConnectedTools = async (
 	const parentNodes =
 		'getParentNodes' in ctx
 			? ctx
-					.getParentNodes(ctx.getNode().name, {
-						connectionType: NodeConnectionTypes.AiTool,
-						depth: 1,
-					})
-					.filter((node) => !node.disabled)
+				.getParentNodes(ctx.getNode().name, {
+					connectionType: NodeConnectionTypes.AiTool,
+					depth: 1,
+				})
+				.filter((node) => !node.disabled)
 			: [];
 
 	const connectedTools = (toolkitConnections ?? [])
 		.flatMap((toolOrToolkit, index) => {
-			if (toolOrToolkit instanceof StructuredToolkit) {
-				const tools = toolOrToolkit.tools;
+		// instanceof fails across module boundaries when multiple n8n-core copies are loaded
+		if ('tools' in toolOrToolkit && Array.isArray((toolOrToolkit as unknown as StructuredToolkit).tools)) {
+			const tools = (toolOrToolkit as unknown as StructuredToolkit).tools;
 				// Add metadata to each tool from the toolkit
 				return tools.map((tool) => {
 					tool.metadata ??= {};
@@ -225,12 +227,12 @@ export const getConnectedTools = async (
 					return tool;
 				});
 			} else {
-				toolOrToolkit.metadata ??= {};
-				toolOrToolkit.metadata.isFromToolkit = false;
-				toolOrToolkit.metadata.sourceNodeName = parentNodes[index]?.name ?? toolOrToolkit.name;
+				const tool = toolOrToolkit as DynamicStructuredTool;
+				tool.metadata ??= {};
+				tool.metadata.isFromToolkit = false;
+				tool.metadata.sourceNodeName = parentNodes[index]?.name ?? tool.name;
+				return tool;
 			}
-
-			return toolOrToolkit;
 		})
 		.map(normalizeToolSchema);
 

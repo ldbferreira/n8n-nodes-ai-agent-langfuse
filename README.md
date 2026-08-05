@@ -149,7 +149,18 @@ Here’s how a single request looks inside Langfuse:
 
 ## Version History
 
-- **v0.1** – Initial release with AI Agent + Langfuse integration
+### v0.1.28 (2026-08-05)
+- **V3 Agent Engine**: Synced with n8n's official V3 execution architecture
+- **HITL support**: Works with `Send and Wait` node — agent pauses for human approval before continuing
+- **Fallback model**: Configure a backup LLM when the primary model fails
+- **Bug fix**: Tool schema corruption when `send_and_wait` or similar tools are connected (cross-module Zod instanceof issue)
+- **Bug fix**: `"multiple tools with the same name: 'undefined'"` when multiple MCP Client Tool nodes are connected (cross-module StructuredToolkit instanceof issue)
+
+### v0.1.27
+- Fixed dependency conflict preventing installation in n8n
+
+### v0.1
+- Initial release with AI Agent + Langfuse integration
 
 ## License
 MIT © 2025 Wistron DXLab  

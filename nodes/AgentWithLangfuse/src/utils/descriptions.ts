@@ -12,7 +12,7 @@ export const schemaTypeField: INodeProperties = {
 			description: 'Generate a schema from an example JSON object',
 		},
 		{
-			name: 'Define using JSON Schema',
+			name: 'Define Using JSON Schema',
 			value: 'manual',
 			description: 'Define the JSON schema manually',
 		},
@@ -118,7 +118,7 @@ export const promptTypeOptionsDeprecated: INodeProperties = {
 				"Looks for an input field called 'guardrailsInput' that is coming from a directly connected Guardrails Node",
 		},
 		{
-			name: 'Define below',
+			name: 'Define Below',
 			value: 'define',
 			description: 'Use an expression to reference data in previous nodes or enter static text',
 		},
@@ -138,7 +138,7 @@ export const promptTypeOptions: INodeProperties = {
 				"Looks for an input field called 'chatInput' that is coming from a directly connected Chat Trigger",
 		},
 		{
-			name: 'Define below',
+			name: 'Define Below',
 			value: 'define',
 			description: 'Use an expression to reference data in previous nodes or enter static text',
 		},

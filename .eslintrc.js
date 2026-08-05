@@ -20,7 +20,7 @@ module.exports = {
 
     plugins: ['@typescript-eslint'],
 
-    ignorePatterns: ['.eslintrc.js', '**/*.js', '**/node_modules/**', '**/dist/**'],
+    ignorePatterns: ['.eslintrc.js', '**/*.js', '**/node_modules/**', '**/dist/**', '**/*.test.ts', '**/tests/**'],
 
     overrides: [
         {

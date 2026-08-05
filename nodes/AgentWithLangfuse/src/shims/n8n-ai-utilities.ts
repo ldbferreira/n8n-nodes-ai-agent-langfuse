@@ -33,7 +33,7 @@ export function getBatchingOptionFields(
                         description: 'How many items to process in each batch',
                     },
                     {
-                        displayName: 'Delay Between Batches (ms)',
+                        displayName: 'Delay Between Batches (Ms)',
                         name: 'delayBetweenBatches',
                         type: 'number',
                         default: 0,
