@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.29] - 2026-08-06
+
+### Fixed
+- Fixed cross-module tool schema detection (`ZodType instanceof`) to avoid invalid tool schemas in HITL/tool calls
+- Fixed cross-module toolkit detection (`StructuredToolkit instanceof`) to avoid `undefined` tool name conflicts with MCP tools
+
+### Changed
+- Simplified docs and release notes wording for user-facing clarity
+
 ## [0.1.28] - 2026-08-05
 
 ### Added

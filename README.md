@@ -149,12 +149,14 @@ Here’s how a single request looks inside Langfuse:
 
 ## Version History
 
+### v0.1.29 (2026-08-06)
+- Fixed tool schema detection for HITL/tool calls (`instanceof` cross-module issue)
+- Fixed MCP toolkit detection to prevent `undefined` tool name conflicts
+
 ### v0.1.28 (2026-08-05)
-- **V3 Agent Engine**: Synced with n8n's official V3 execution architecture
-- **HITL support**: Works with `Send and Wait` node — agent pauses for human approval before continuing
-- **Fallback model**: Configure a backup LLM when the primary model fails
-- **Bug fix**: Tool schema corruption when `send_and_wait` or similar tools are connected (cross-module Zod instanceof issue)
-- **Bug fix**: `"multiple tools with the same name: 'undefined'"` when multiple MCP Client Tool nodes are connected (cross-module StructuredToolkit instanceof issue)
+- Synced V3 execution flow with official n8n Agent architecture
+- Added HITL (`Send and Wait`) and fallback model support
+- Fixed cross-module `instanceof` issues in tool schema and toolkit detection
 
 ### v0.1.27
 - Fixed dependency conflict preventing installation in n8n

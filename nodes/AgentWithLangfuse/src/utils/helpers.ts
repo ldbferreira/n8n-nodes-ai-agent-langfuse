@@ -216,9 +216,9 @@ export const getConnectedTools = async (
 
 	const connectedTools = (toolkitConnections ?? [])
 		.flatMap((toolOrToolkit, index) => {
-		// instanceof fails across module boundaries when multiple n8n-core copies are loaded
-		if ('tools' in toolOrToolkit && Array.isArray((toolOrToolkit as unknown as StructuredToolkit).tools)) {
-			const tools = (toolOrToolkit as unknown as StructuredToolkit).tools;
+			// instanceof fails across module boundaries when multiple n8n-core copies are loaded
+			if ('tools' in toolOrToolkit && Array.isArray((toolOrToolkit as unknown as StructuredToolkit).tools)) {
+				const tools = (toolOrToolkit as unknown as StructuredToolkit).tools;
 				// Add metadata to each tool from the toolkit
 				return tools.map((tool) => {
 					tool.metadata ??= {};
