@@ -20,8 +20,8 @@ import { createAgentSequence } from './createAgentSequence';
 import { finalizeResult } from './finalizeResult';
 import { prepareItemContext } from './prepareItemContext';
 import { runAgent } from './runAgent';
-import { CallbackHandler } from 'langfuse-langchain'; 		// add langfuse handler 
-
+import type { CallbackHandler } from 'langfuse-langchain';
+import { CrossModuleUsageCallbackHandler } from '../../src/utils/LangfuseCallbackHandler';
 
 type BatchResult = AgentResult | EngineRequest<RequestResponseMetadata>;
 
@@ -119,7 +119,7 @@ export async function executeBatch(
 			} else {
 				parsedCustomMetadata = rawMetadata.customMetadata;
 			}
-			langfuseHandler = new CallbackHandler({
+			langfuseHandler = new CrossModuleUsageCallbackHandler({
 				publicKey: langfuseCreds.publicKey as string,
 				secretKey: langfuseCreds.secretKey as string,
 				baseUrl: (langfuseCreds.url as string) ?? process.env.LANGFUSE_HOST,
